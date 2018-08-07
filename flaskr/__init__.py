@@ -25,7 +25,6 @@ def create_app(test_config=None):
         pass
 
     @app.route('/hello')
-    @app.route('/')
     def hello():
         return 'Hello, World!'
 
@@ -34,5 +33,11 @@ def create_app(test_config=None):
 
     from . import auth_bp
     app.register_blueprint(auth_bp.bp)
+
+    from . import blog_bp
+    app.register_blueprint(blog_bp.bp)
+    # works exactly the same as the @route decorator; Needed so that url_for('index') will direct to the '/' URL -
+    # otherwise would have to always use url_for('blog.index')
+    app.add_url_rule('/', endpoint='index')
 
     return app
